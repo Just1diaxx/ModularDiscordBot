@@ -21,6 +21,12 @@ module.exports = class SetLevelCommand extends Command {
                     type: ApplicationCommandOptionType.Integer,
                     required: true,
                     choices: Object.entries(PowerLevels).slice(1).map(c => ({ name: c[0], value: c[1] })) // omit OWNER
+                },
+                {
+                    name: "time",
+                    description: "For how long to set the level (in minutes)",
+                    type: ApplicationCommandOptionType.Integer,
+                    required: false
                 }
             ]
         });
@@ -29,11 +35,14 @@ module.exports = class SetLevelCommand extends Command {
     /**
      * 
      * @param {import('../../index.js')} client 
-     * @param {import('discord.js').ChatInputCommandInteraction} interaction 
+     * @param {import('discord.js').ChatInputCommandInteraction} interaction
      */
     async run(client, interaction) {
         let level = interaction.options.getInteger('level');
         let user = interaction.options.getUser('user');
+        let time = interaction.options.getInteger('time') || null;
+
+
 
         const data = await client.database.forceUser(user.id);
         if (!data) return await interaction.reply(":warning: There's no user in database matching your query");
@@ -44,9 +53,16 @@ module.exports = class SetLevelCommand extends Command {
 
         data.powerlevel = level;
 
+        let timestring = "";
+
+        if (time) {
+            data.expires = Date.now() + time * 60 * 1000;
+            timestring = ` for ${time} minutes`;
+        }
+
         try {
             await client.database.updateUser(data);
-            return await interaction.reply({ content: `:white_check_mark: Successfully set powerlevel for ${client.utils.parseUser(user)} to: ${Object.entries(PowerLevels).find(l => l[1] == level)[0]}`, allowedMentions: {} });
+            return await interaction.reply({ content: `:white_check_mark: Successfully set powerlevel for ${client.utils.parseUser(user)} to: ${Object.entries(PowerLevels).find(l => l[1] == level)[0]}${timestring}`, allowedMentions: {} });
         } catch (e) {
             console.error(e);
             return await interaction.reply(":x: An internal error occurred");

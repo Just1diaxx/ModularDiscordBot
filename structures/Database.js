@@ -41,6 +41,7 @@ module.exports = class Database {
         const user = await this.db.users.insert({
             id: userID,
             powerlevel: PowerLevels.USER,
+            expires: null
         })
         this.cacheUser(user)
         return user;
@@ -75,6 +76,7 @@ module.exports = class Database {
                 user.powerlevel = PowerLevels.USER
                 this.updateUser(user)
             }
+            await this.checkExpire(userID)
             return user;
         }
         return await this.addUser(userID)
@@ -127,5 +129,26 @@ module.exports = class Database {
             repair: true,
         });
         this.logger.success('Done!');
+    }
+
+    /**
+     * @param {String} userID
+     */
+    async checkExpire(userID) {
+        const user = await this.getUser(userID)
+
+        if (user.expires) {
+            if (user.expires < Date.now()) {
+                const data = await this.client.database.forceUser(user.id);
+                data.powerlevel = 0;
+                data.expires = null;
+
+                try {
+                    await this.client.database.updateUser(data);
+                } catch (e) {
+                    console.error("Failed to update user powerlevel: " + e);
+                }
+            }
+        }
     }
 }
