@@ -20,7 +20,8 @@ class BotClient extends Client {
         this.config = new ConfigurationManager(this, {
             activity: `/help`,
             owners: ["311929179186790400", "422418878459674624"],
-            systemServer: ["1313550337474429001"]
+            systemServer: ["1313550337474429001"],
+            baseCommandsPrefix: "?"
         });
 
         this.database = new Database(this);

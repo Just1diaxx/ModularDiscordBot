@@ -5,3 +5,4 @@ owners:
   - "1174678858444836907"
 systemServer:
   - "1313550337474429001"
+baseCommandsPrefix: "?"
