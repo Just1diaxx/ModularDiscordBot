@@ -42,6 +42,8 @@ module.exports = class BaseCommandManager {
 
             if(!_command.toJson().config.enabled) return "COMMAND_DISABLED";
 
+            if (_command.toJson().config.name.toLowerCase() === "unspecified.") return "BAD_COMMAND_NAME";
+
             if (_command.toJson().config.alts){
                 for (const alt of _command.toJson().config.alts) {
                     this.commands.set(alt.toLowerCase(), [_command, `${file}`]);
