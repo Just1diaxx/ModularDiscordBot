@@ -14,7 +14,7 @@ Modules are stored in modules/ directory and are loaded into the bot on startup.
 ```js
 const Module = require("../structures/Module.js"); // Import the base module
 
-class Example extends Module {
+module.exports = class Example extends Module {
     constructor(client) {
         super(client, {
             name: "Example", // Name of the module
@@ -39,8 +39,6 @@ class Example extends Module {
         this.logger.log("Hi!")
     }
 }
-
-module.exports = Example;
 ```
 
 ## Making a BaseCommand
