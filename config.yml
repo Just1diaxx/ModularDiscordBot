@@ -1,4 +1,7 @@
-activity: /help
+activity: 
+  name: '/help'
+  type: 'Playing'
+  url: 'https://www.twitch.tv/your_channel' # if streaming or watching
 owners:
   - "311929179186790400"
   - "422418878459674624"

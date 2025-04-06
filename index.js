@@ -12,7 +12,11 @@ BigInt.prototype.toJSON = function () { return this.toString() } // MDN https://
 class BotClient extends Client {
     constructor(options) {
         const config = new ConfigurationManager('Client', {
-            activity: `/help`,
+            activity: {
+                name: '/help',
+                type: 'Playing',
+                url: 'https://twitch.tv/your_channel' // if streaming or watching
+            },
             owners: ["311929179186790400", "422418878459674624"],
             systemServer: ["1313550337474429001"],
             intents: Object.keys(GatewayIntentBits).filter(i => isNaN(i)),

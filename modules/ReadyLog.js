@@ -1,3 +1,4 @@
+const { ActivityType } = require("discord.js");
 const Module = require("../structures/Module.js");
 
 module.exports = class ReadyLog extends Module {
@@ -24,6 +25,12 @@ module.exports = class ReadyLog extends Module {
         this.logger.info(`System Server: ${client.config.get('systemServer').join(", ")}`);
         this.logger.info(`Owners: ${client.config.get('owners').join(", ")}`);
         this.logger.info(`===========================`);
+
+        client.user.setActivity({  
+            name: client.config.get('activity.name'),
+            type: ActivityType[client.config.get('activity.type')],
+            url: client.config.get('activity.url')
+        });
 
         // If the bot got rebooted with reboot command, this will edit the message once ready
         try {
