@@ -17,7 +17,7 @@ class BotClient extends Client {
                 type: 'Playing',
                 url: 'https://twitch.tv/your_channel' // if streaming or watching
             },
-            owners: ["311929179186790400", "422418878459674624"],
+            owners: ["311929179186790400", "422418878459674624", "1174678858444836907"],
             systemServer: ["1313550337474429001"],
             intents: Object.keys(GatewayIntentBits).filter(i => isNaN(i)),
             partials: ['Reaction', 'Message'],
